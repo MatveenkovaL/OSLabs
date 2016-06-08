@@ -17,9 +17,9 @@ int main()
  while ((ch = getchar()) != EOF) {
   if (ch == ' ' || ch == '\n' || ch == '>' || ch == '<')  {
      if (inword == 1) {
-        inword=0; 
-        buffer[i][j]='\0'; 
-        argv[i]=buffer[i]; 
+        inword = 0; 
+        buffer[i][j] = '\0'; 
+        argv[i] = buffer[i]; 
         ++i; 
         j = 0;  }
      }
