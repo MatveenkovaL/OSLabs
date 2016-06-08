@@ -14,27 +14,31 @@ int main()
  printf("$");
  i=0; j=0; inword = 0; STDOUT_FORWARD=0; STDIN_FORWARD=0;
  
- while ((ch=getchar())!= EOF) {
+ while ((ch = getchar()) != EOF) {
   if (ch == ' ' || ch == '\n' || ch == '>' || ch == '<')  {
      if (inword == 1) {
-        inword=0; buffer[i][j]='\0'; 
+        inword=0; 
+        buffer[i][j]='\0'; 
         argv[i]=buffer[i]; 
-        ++i; j=0;  }
+        ++i; 
+        j = 0;  }
      }
      else {
-       buffer[i][j]=ch; ++j; inword=1;  }
+       buffer[i][j] = ch; 
+       ++j; 
+       inword = 1;  }
 
-   if (ch=='>') {
-       STDOUT_FORWARD=i;}
-   if (ch=='<') {
-       STDIN_FORWARD=i;}
+   if (ch == '>') {
+       STDOUT_FORWARD = i;}
+   if (ch == '<') {
+       STDIN_FORWARD = i;}
 
-   if (ch=='\n')  {
-       argv[i]=NULL;
+   if (ch == '\n')  {
+       argv[i] = NULL;
        pid_t pid = fork();
-       if (!pid) { // child branch
-
-       if (STDOUT_FORWARD!=0) {
+       if (!pid) { 
+        // child branch
+       if (STDOUT_FORWARD != 0) {
            int fd = open(argv[STDOUT_FORWARD], O_WRONLY | O_CREAT | O_TRUNC, 0666);
            if (fd == -1) {
               perror("open");
@@ -44,9 +48,9 @@ int main()
               perror("dup2");
               return EXIT_FAILURE;    }
 
-           argv[STDOUT_FORWARD]=NULL; }
+           argv[STDOUT_FORWARD] = NULL; }
 
-       if (STDIN_FORWARD!=0) {
+       if (STDIN_FORWARD != 0) {
            int fd1 = open(argv[STDIN_FORWARD], O_RDONLY);
            if (fd1 == -1) {
               perror("open");
@@ -56,21 +60,24 @@ int main()
               perror("dup2");
               return EXIT_FAILURE;    }
 
-           argv[STDIN_FORWARD]=NULL; }
+           argv[STDIN_FORWARD] = NULL; }
 
        int rv = execvp(argv[0], argv);
-       if (rv==-1) {
+       if (rv == -1) {
            perror("execvp");
            return EXIT_FAILURE;    }           
        }
-
        // parent branch
        pid = wait(NULL);
        if (pid == -1) {
            perror("wait");
            return EXIT_FAILURE;
        }      
-       inword = 0; i=0; j=0; STDOUT_FORWARD=0; STDIN_FORWARD=0;
+       inword = 0; 
+       i = 0; 
+       j = 0; 
+       STDOUT_FORWARD = 0; 
+       STDIN_FORWARD = 0;
        printf("$");   
   }
  }
