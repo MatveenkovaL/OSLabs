@@ -11,21 +11,28 @@ int main()
  char* argv[16];
 
  printf("$");
- inword = 0; i=0; j=0;
+ inword = 0; i = 0; j = 0;
  
- while ((ch=getchar ()) != EOF) {
+ while ((ch = getchar ()) != EOF) {
   if (ch == ' ' || ch == '\n')  {
      if (inword == 1) {
-        inword=0; buffer[i][j]='\0'; argv[i]=&buffer[i]; ++i; j=0;
-     }}
-     else {
-       buffer[i][j]=ch; ++j; inword=1;
+        inword = 0; 
+        buffer[i][j] = '\0'; 
+        argv[i] = &buffer[i]; 
+        ++i; 
+        j = 0;
      }
-
-     if (ch=='\n')  {
-        argv[i]=NULL;
+  }
+     else {
+       buffer[i][j] = ch; 
+       ++j; 
+       inword = 1;
+     }
+     if (ch == '\n')  {
+        argv[i] = NULL;
         pid_t pid = fork();
-        if (!pid) { // child branch
+        if (!pid) { 
+           // child branch
            int rv = execvp(argv[0], argv);
            if (rv == -1) {
              perror("execvp");
@@ -38,9 +45,12 @@ int main()
            perror("wait");
            return EXIT_FAILURE;
          }      
-         inword = 0; i=0; j=0;
+         inword = 0; 
+         i = 0; 
+         j = 0;
          printf("$");   
   }
+ 
  }
  printf("\n");
 return EXIT_SUCCESS; 
