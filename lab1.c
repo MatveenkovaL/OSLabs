@@ -3,12 +3,14 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#define MAX_WORDS 16
+#define MAX_LINE 80
 
 int main()
 {
  int inword = 0, i = 0, j = 0, ch;
- char buffer[16][80];
- char* argv[16];
+ char buffer[MAX_WORDS][MAX_LINE];
+ char* argv[MAX_WORDS];
 
  printf("$");
  
