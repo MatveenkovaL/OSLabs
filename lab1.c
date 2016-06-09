@@ -6,19 +6,18 @@
 
 int main()
 {
- int inword, i, j, ch;
+ int inword = 0, i = 0, j = 0, ch;
  char buffer[16][80];
  char* argv[16];
 
  printf("$");
- inword = 0; i = 0; j = 0;
  
  while ((ch = getchar ()) != EOF) {
   if (ch == ' ' || ch == '\n')  {
      if (inword == 1) {
         inword = 0; 
         buffer[i][j] = '\0'; 
-        argv[i] = &buffer[i]; 
+        argv[i] = buffer[i]; 
         ++i; 
         j = 0;
      }
