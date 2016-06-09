@@ -5,14 +5,12 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int main()
-{
- int  i, j, ch, inword, STDOUT_FORWARD, STDIN_FORWARD;
+int main() {
+ int  i = 0, j = 0, ch, inword = 0, STDOUT_FORWARD = 0, STDIN_FORWARD = 0;
  char buffer[16][80];
  char* argv[16];
 
  printf("$");
- i=0; j=0; inword = 0; STDOUT_FORWARD=0; STDIN_FORWARD=0;
  
  while ((ch = getchar()) != EOF) {
   if (ch == ' ' || ch == '\n' || ch == '>' || ch == '<')  {
@@ -21,17 +19,21 @@ int main()
         buffer[i][j] = '\0'; 
         argv[i] = buffer[i]; 
         ++i; 
-        j = 0;  }
+        j = 0;  
      }
+  }
      else {
        buffer[i][j] = ch; 
        ++j; 
-       inword = 1;  }
+       inword = 1;  
+     }
 
    if (ch == '>') {
-       STDOUT_FORWARD = i;}
+       STDOUT_FORWARD = i;
+   }
    if (ch == '<') {
-       STDIN_FORWARD = i;}
+       STDIN_FORWARD = i;
+   }
 
    if (ch == '\n')  {
        argv[i] = NULL;
@@ -42,30 +44,33 @@ int main()
            int fd = open(argv[STDOUT_FORWARD], O_WRONLY | O_CREAT | O_TRUNC, 0666);
            if (fd == -1) {
               perror("open");
-              return EXIT_FAILURE;    }
+              return EXIT_FAILURE;    
+           }
 
            if (-1 == dup2(fd, STDOUT_FILENO)) {
               perror("dup2");
-              return EXIT_FAILURE;    }
-
-           argv[STDOUT_FORWARD] = NULL; }
+              return EXIT_FAILURE;    
+           }
+           argv[STDOUT_FORWARD] = NULL; 
+       }
 
        if (STDIN_FORWARD != 0) {
            int fd1 = open(argv[STDIN_FORWARD], O_RDONLY);
            if (fd1 == -1) {
               perror("open");
-              return EXIT_FAILURE;    }
-
+              return EXIT_FAILURE;    
+           }
            if (-1 == dup2(fd1, STDIN_FILENO)) {
               perror("dup2");
-              return EXIT_FAILURE;    }
-
-           argv[STDIN_FORWARD] = NULL; }
-
+              return EXIT_FAILURE;    
+           }
+           argv[STDIN_FORWARD] = NULL; 
+       }
        int rv = execvp(argv[0], argv);
        if (rv == -1) {
            perror("execvp");
-           return EXIT_FAILURE;    }           
+           return EXIT_FAILURE;    
+       }           
        }
        // parent branch
        pid = wait(NULL);
@@ -79,7 +84,7 @@ int main()
        STDOUT_FORWARD = 0; 
        STDIN_FORWARD = 0;
        printf("$");   
-  }
+   }
  }
  printf("\n");
 return EXIT_SUCCESS; 
