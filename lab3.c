@@ -4,12 +4,14 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
+#define MAX_WORDS 16
+#define MAX_LINE 80
 
 int main()
 {
- int  i, j, ch, inword, STDOUT_FORWARD, STDIN_FORWARD;
- char buffer[16][80];
- char* argv[16];
+ int  i = 0, j = 0, ch, inword, STDOUT_FORWARD, STDIN_FORWARD;
+ char buffer[MAX_WORDS][MAX_LINE];
+ char* argv[MAX_WORDS];
 
  printf("$");
  i=0; j=0; inword = 0; STDOUT_FORWARD=0; STDIN_FORWARD=0;
