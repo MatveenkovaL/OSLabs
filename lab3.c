@@ -4,17 +4,19 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
+#define MAX_WORDS 16
+#define MAX_LINE 80
 
 int main() {
     char c;
-    char words[16][80];
+    char words[MAX_WORDS][MAX_LINE];
     int word_length, word_count;
     int first_exec_name, first_args_begin, first_args_end;
     int first_input_file, first_output_file;
-    char* first_args[16];
+    char* first_args[MAX_WORDS];
     int second_exec_name, second_args_begin, second_args_end;
     int second_input_file, second_output_file;
-    char* second_args[16];
+    char* second_args[MAX_WORDS];
     int is_parsing_first = 1;
     int i;
 
