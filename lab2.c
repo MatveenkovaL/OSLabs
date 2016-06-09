@@ -4,11 +4,13 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
+#define MAX_WORDS 16
+#define MAX_LINE 80
 
 int main() {
  int  i = 0, j = 0, ch, inword = 0, STDOUT_FORWARD = 0, STDIN_FORWARD = 0;
- char buffer[16][80];
- char* argv[16];
+ char buffer[MAX_WORDS][MAX_LINE];
+ char* argv[MAX_WORDS];
 
  printf("$");
  
@@ -40,7 +42,7 @@ int main() {
        pid_t pid = fork();
        if (!pid) { 
         // child branch
-       if (STDOUT_FORWARD != 0) {
+       if (!STDOUT_FORWARD) {
            int fd = open(argv[STDOUT_FORWARD], O_WRONLY | O_CREAT | O_TRUNC, 0666);
            if (fd == -1) {
               perror("open");
@@ -54,7 +56,7 @@ int main() {
            argv[STDOUT_FORWARD] = NULL; 
        }
 
-       if (STDIN_FORWARD != 0) {
+       if (!STDIN_FORWARD) {
            int fd1 = open(argv[STDIN_FORWARD], O_RDONLY);
            if (fd1 == -1) {
               perror("open");
